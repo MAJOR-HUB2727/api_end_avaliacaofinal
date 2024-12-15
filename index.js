@@ -103,18 +103,36 @@ app.delete("/body-builder/:cpf", (req, res) => {
 })
 
 // Rota para buscar clientes (com ou sem filtro)
-app.get('/body-builder', (req, res) => {
-  let busca = req.query.busca
-  let clientesFiltrados
-  if (busca){ //se a busca for diferente de vazio
-    clientesFiltrados = clientes.filter((cliente) => {
-      return cliente.nome.toLowerCase().includes(busca.toLowerCase())
-      || cliente.cpf.toLowerCase().includes(busca.toLowerCase())
-    })
-  }else{
-    clientesFiltrados = clientes
-  }
-  res.json(clientesFiltrados)
+app.get("/body-builder", (req, res) => {
+  const searchQuery = req.query.search ? req.query.search.toLowerCase() : '';
+
+  const clientesFiltrados = clientes.filter(cliente => {
+      return (
+          cliente.nome.toLowerCase().includes(searchQuery) ||
+          cliente.cpf.toLowerCase().includes(searchQuery)
+      );
+  });
+
+  // Inclui estilo completo no cliente
+  const resultado = clientesFiltrados.map(cliente => {
+      const estilo = estilos.find(e => e.nome === cliente.estilo);
+      return {
+          ...cliente,
+          estilo: estilo ? estilo.nome : 'Desconhecido',
+      };
+  });
+
+  res.json(resultado); // Retorna os clientes com o estilo completo
+});
+
+
+app.post('/gym', (req, res) =>{
+  const data = req.body
+  let gym = new Gym()
+  gym.nome = data.nome
+  gym.telefone = data.telefone
+  academias.push(gym)
+  res.send("cadastrou")
 })
 
 app.get('/gym', (req, res) =>{
