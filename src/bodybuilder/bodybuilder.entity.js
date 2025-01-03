@@ -1,6 +1,5 @@
 class BodyBuilder {
-
-    constructor(nome, cpf, peso, altura, idade, style, gym){
+    constructor(nome, cpf, peso, altura, idade, style, gym) {
         this.nome = nome
         this.cpf = cpf
         this.peso = peso
@@ -8,6 +7,7 @@ class BodyBuilder {
         this.idade = idade
         this.style = style // associacao com a classe Style
         this.gym = gym // associacao com a classe Gym
+        // this.novoEstilo = novoEstilo
     }
 }
 
